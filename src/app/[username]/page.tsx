@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { View } from "@/types";
 import { supabase } from "@/lib/supabase";
 import { ProfileCard, type PublicProfile } from "@/components/profile/profile-card";
+import { track } from "@vercel/analytics/react";
 
 type Profile = PublicProfile;
 
@@ -175,6 +176,12 @@ export default function ProfilePage({
       console.error("Public profile: error copying view", insertError);
       return;
     }
+
+    // Analytics: track that someone copied a view from a public profile
+    track("copied_view_from_public_profile", {
+      sourceUsername: profile?.username ?? null,
+      viewId,
+    });
 
     // Optional: tiny UX feedback; in a full app we'd use a toast
     alert("Added to your views");

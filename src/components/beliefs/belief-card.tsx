@@ -82,83 +82,92 @@ export function ViewCard({
     onClick?.();
   };
 
+  const menu =
+    (showActions || showCopyAction) && (
+      <div ref={menuRef} className="relative">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setMenuOpen(!menuOpen);
+          }}
+          className="p-1 rounded-lg hover:bg-muted transition-colors"
+        >
+          <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+        </button>
+
+        {/* Dropdown */}
+        {menuOpen && (
+          <div
+            className="absolute right-0 top-full mt-1 z-50 min-w-[160px] bg-background border border-border rounded-xl shadow-lg py-1 overflow-hidden"
+            style={{ color: "hsl(var(--foreground))" }}
+          >
+            {showCopyAction && (
+              <button
+                onClick={handleMenuAction(() => onCopy?.(view.id))}
+                className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2"
+              >
+                Add to my page
+              </button>
+            )}
+            {showActions && (
+              <>
+                {showCopyAction && <div className="h-px bg-border my-1" />}
+                <button
+                  onClick={handleMenuAction(() => onEdit?.(view.id))}
+                  className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2"
+                >
+                  <Pencil className="w-4 h-4" />
+                  Edit
+                </button>
+                <div className="h-px bg-border my-1" />
+                <button
+                  onClick={handleMenuAction(() => onDelete?.(view.id))}
+                  className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2 text-red-500"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    );
+
+  const showTopRow = Boolean(
+    showCategory || (dragListeners && dragAttributes) || showActions,
+  );
+
   return (
     <div
       className="bg-card border border-border rounded-2xl p-5 cursor-pointer relative"
       onClick={handleCardClick}
     >
-      {/* Category + Actions */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          {dragListeners && dragAttributes && (
-            <button
-              type="button"
-              {...dragListeners}
-              {...dragAttributes}
-              onClick={(e) => e.preventDefault()}
-              className="mr-1 inline-flex items-center justify-center text-muted-foreground cursor-grab active:cursor-grabbing"
-              aria-label="Drag to reorder"
-            >
-              <GripVertical className="w-3 h-3" />
-            </button>
-          )}
-          {showCategory && (
-            <span className="text-sm text-muted-foreground">{view.category}</span>
-          )}
-        </div>
-
-        {/* Three-dot menu: owner (edit/delete) or viewer (copy) */}
-        {(showActions || showCopyAction) && (
-          <div ref={menuRef} className="relative">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setMenuOpen(!menuOpen);
-              }}
-              className="p-1 rounded-lg hover:bg-muted transition-colors"
-            >
-              <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-            </button>
-
-            {/* Dropdown */}
-            {menuOpen && (
-              <div
-                className="absolute right-0 top-full mt-1 z-50 min-w-[160px] bg-background border border-border rounded-xl shadow-lg py-1 overflow-hidden"
-                style={{ color: "hsl(var(--foreground))" }}
+      {/* Category + Actions (dashboard views) */}
+      {showTopRow && (
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            {dragListeners && dragAttributes && (
+              <button
+                type="button"
+                {...dragListeners}
+                {...dragAttributes}
+                onClick={(e) => e.preventDefault()}
+                className="mr-1 inline-flex items-center justify-center text-muted-foreground cursor-grab active:cursor-grabbing"
+                aria-label="Drag to reorder"
               >
-                {showCopyAction && (
-                  <button
-                    onClick={handleMenuAction(() => onCopy?.(view.id))}
-                    className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2"
-                  >
-                    Add to my page
-                  </button>
-                )}
-                {showActions && (
-                  <>
-                    {showCopyAction && <div className="h-px bg-border my-1" />}
-                    <button
-                      onClick={handleMenuAction(() => onEdit?.(view.id))}
-                      className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2"
-                    >
-                      <Pencil className="w-4 h-4" />
-                      Edit
-                    </button>
-                    <div className="h-px bg-border my-1" />
-                    <button
-                      onClick={handleMenuAction(() => onDelete?.(view.id))}
-                      className="w-full px-3 py-2 text-sm text-left hover:bg-muted flex items-center gap-2 text-red-500"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      Delete
-                    </button>
-                  </>
-                )}
-              </div>
+                <GripVertical className="w-3 h-3" />
+              </button>
+            )}
+            {showCategory && (
+              <span className="text-sm text-muted-foreground">{view.category}</span>
             )}
           </div>
-        )}
-      </div>
+
+          {/* Three-dot menu: owner (edit/delete) */}
+          {showActions && menu}
+        </div>
+      )}
 
       {/* Visibility indicator (owner-facing only) */}
       {showVisibility && view.visibility === "private" && (
@@ -172,7 +181,11 @@ export function ViewCard({
 
       {/* Stem - #888 15px */}
       {getStem() && (
-        <p className="text-[15px] text-[#888] mb-1">{getStem()}</p>
+        <div className="flex items-start justify-between mb-1">
+          <p className="text-[15px] text-[#888] mr-2 flex-1">{getStem()}</p>
+          {/* On public profiles with only copy action, align menu with stem */}
+          {!showTopRow && showCopyAction && menu}
+        </div>
       )}
 
       {/* Statement - Inter Bold 20px #111 */}

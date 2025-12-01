@@ -33,6 +33,7 @@ import {
   type View,
 } from "@/types";
 import { supabase } from "@/lib/supabase";
+import { track } from "@vercel/analytics/react";
 
 const steps = [
   { id: 1, title: "Welcome" },
@@ -278,6 +279,22 @@ export default function OnboardingPage() {
         setIsLoading(false);
         return;
       }
+
+      // Analytics: user successfully finished onboarding and created their first view
+      const hasAnySocialLink = Boolean(
+        profileDraft.socialInstagram.trim() ||
+          profileDraft.socialTwitter.trim() ||
+          profileDraft.socialYoutube.trim() ||
+          profileDraft.socialSpotify.trim() ||
+          profileDraft.socialWebsite.trim(),
+      );
+
+      track("onboarding_completed", {
+        hasProfile: !skipProfileSetup,
+        hasSocialLinks: hasAnySocialLink,
+        category: beliefData.category || null,
+        stemType: beliefData.stemType || null,
+      });
 
       router.push("/app");
     } catch (e) {
