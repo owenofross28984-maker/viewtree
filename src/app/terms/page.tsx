@@ -6,8 +6,8 @@ export default function TermsPage() {
         <p className="text-xs uppercase tracking-wide text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
 
         <p>
-          These Terms of Service ("Terms") govern your use of ViewTree ("we", "us", or "our") and the
-          viewtr.ee website (the "Service"). By creating an account or using the Service, you agree to be
+          These Terms of Service (&quot;Terms&quot;) govern your use of ViewTree (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) and the
+          viewtr.ee website (the &quot;Service&quot;). By creating an account or using the Service, you agree to be
           bound by these Terms.
         </p>
 
@@ -52,7 +52,7 @@ export default function TermsPage() {
 
         <h2 className="text-lg font-semibold text-foreground">6. Disclaimer of warranties</h2>
         <p>
-          The Service is provided "as is" and "as available" without warranties of any kind, whether express
+          The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, whether express
           or implied. We do not guarantee that the Service will be uninterrupted, secure, or error-free.
         </p>
 
@@ -65,7 +65,7 @@ export default function TermsPage() {
 
         <h2 className="text-lg font-semibold text-foreground">8. Changes to these Terms</h2>
         <p>
-          We may update these Terms from time to time. When we do, we will change the "Last updated" date at
+          We may update these Terms from time to time. When we do, we will change the &quot;Last updated&quot; date at
           the top of this page. Your continued use of the Service after changes become effective means you
           accept the updated Terms.
         </p>
