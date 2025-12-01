@@ -57,6 +57,7 @@ export default function OnboardingPage() {
     visibility: "public" as Visibility,
   });
   const [error, setError] = useState<string | null>(null);
+  const [profileStepError, setProfileStepError] = useState<string | null>(null);
   const [profileDraft, setProfileDraft] = useState({
     username: "",
     displayName: "",
@@ -152,6 +153,36 @@ export default function OnboardingPage() {
   const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
+  const handleProfileStepContinue = () => {
+    setSkipProfileSetup(false);
+
+    const socialInstagram = profileDraft.socialInstagram.trim();
+    const socialTwitter = profileDraft.socialTwitter.trim();
+    const socialYoutube = profileDraft.socialYoutube.trim();
+    const socialSpotify = profileDraft.socialSpotify.trim();
+
+    const lowerInstagram = socialInstagram.toLowerCase();
+    const lowerTwitter = socialTwitter.toLowerCase();
+    const lowerYoutube = socialYoutube.toLowerCase();
+    const lowerSpotify = socialSpotify.toLowerCase();
+
+    if (
+      (socialInstagram && !lowerInstagram.includes("instagram")) ||
+      (socialTwitter &&
+        !(lowerTwitter.includes("twitter") || lowerTwitter.includes("x.com"))) ||
+      (socialYoutube && !lowerYoutube.includes("youtube")) ||
+      (socialSpotify && !lowerSpotify.includes("spotify"))
+    ) {
+      setProfileStepError(
+        "Social links must include the platform name (Instagram, Twitter/X, YouTube, Spotify).",
+      );
+      return;
+    }
+
+    setProfileStepError(null);
+    nextStep();
+  };
+
   const handleComplete = async () => {
     setIsLoading(true);
     setError(null);
@@ -186,34 +217,11 @@ export default function OnboardingPage() {
         profileUpdatePayload.theme_accent = profileDraft.themeAccent?.trim() || null;
         profileUpdatePayload.theme_text = profileDraft.themeText?.trim() || null;
         profileUpdatePayload.theme_font = profileDraft.themeFont;
-
         const socialInstagram = profileDraft.socialInstagram.trim();
         const socialTwitter = profileDraft.socialTwitter.trim();
         const socialYoutube = profileDraft.socialYoutube.trim();
         const socialSpotify = profileDraft.socialSpotify.trim();
         const socialWebsite = profileDraft.socialWebsite.trim();
-
-        const lowerInstagram = socialInstagram.toLowerCase();
-        const lowerTwitter = socialTwitter.toLowerCase();
-        const lowerYoutube = socialYoutube.toLowerCase();
-        const lowerSpotify = socialSpotify.toLowerCase();
-
-        if (
-          (socialInstagram && !lowerInstagram.includes("instagram")) ||
-          (socialTwitter &&
-            !(
-              lowerTwitter.includes("twitter") ||
-              lowerTwitter.includes("x.com")
-            )) ||
-          (socialYoutube && !lowerYoutube.includes("youtube")) ||
-          (socialSpotify && !lowerSpotify.includes("spotify"))
-        ) {
-          setError(
-            "Social links must include the platform name (Instagram, Twitter/X, YouTube, Spotify).",
-          );
-          setIsLoading(false);
-          return;
-        }
 
         profileUpdatePayload.social_instagram = socialInstagram || null;
         profileUpdatePayload.social_twitter = socialTwitter || null;
@@ -640,6 +648,9 @@ export default function OnboardingPage() {
                             className="text-sm"
                           />
                         </div>
+                        {profileStepError && (
+                          <p className="text-xs text-destructive mt-2">{profileStepError}</p>
+                        )}
                       </div>
 
                       <div className="pt-2 border-t border-border space-y-3">
@@ -797,7 +808,7 @@ export default function OnboardingPage() {
                   </Card>
 
                   {/* Live preview, styled similarly to the /app public page preview but without actions */}
-                  <div className="hidden md:block">
+                  <div className="hidden md:block md:sticky md:top-4">
                     <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase mb-1">
                       Public page preview
                     </p>
@@ -840,6 +851,7 @@ export default function OnboardingPage() {
                         usernameAvailable === false
                       }
                       onClick={() => {
+                        setProfileStepError(null);
                         setSkipProfileSetup(true);
                         nextStep();
                       }}
@@ -853,10 +865,7 @@ export default function OnboardingPage() {
                         checkingUsername ||
                         usernameAvailable === false
                       }
-                      onClick={() => {
-                        setSkipProfileSetup(false);
-                        nextStep();
-                      }}
+                      onClick={handleProfileStepContinue}
                     >
                       Continue
                       <ArrowRight className="ml-2 w-4 h-4" />

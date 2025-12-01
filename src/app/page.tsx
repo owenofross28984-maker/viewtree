@@ -1,34 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { ViewTreeLogo } from "@/components/layout/logo";
 import { AccountMenu } from "@/components/layout/account-menu";
 
-const heroPreviewImages = [
-  { src: "/images/profile-preview-1.png", alt: "Example ViewTree profile 1" },
-  { src: "/images/profile-preview-2.png", alt: "Example ViewTree profile 2" },
-  { src: "/images/profile-preview-3.png", alt: "Example ViewTree profile 3" },
-];
-
 // 3-step flow
 const steps = [
   {
     number: "1",
-    title: "Choose your @name",
-    description: "Sign up in 10 seconds with email or Google.",
+    title: "Create your page",
+    description: "Sign up in seconds and claim a short viewtr.ee/@username link.",
   },
   {
     number: "2",
-    title: "Add your views",
-    description: "Write what you believe, support, or oppose.",
+    title: "Add a few views",
+    description: "Write what you believe, support, or oppose  just a sentence at a time.",
   },
   {
     number: "3",
     title: "Share one link",
-    description: "Put viewtr.ee/@you in your bio. Done.",
+    description: "Drop your page in bios, profiles, and messages instead of long threads.",
   },
 ];
 
@@ -37,10 +30,12 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Hero Section - 100vh on mobile */}
       <section className="min-h-screen flex flex-col px-4">
-        {/* Top bar: wordmark + account menu */}
-        <div className="pt-6 flex items-center justify-between max-w-viewtree mx-auto w-full">
+        {/* Top bar: centered logo with account menu on the right */}
+        <div className="pt-6 max-w-viewtree mx-auto w-full flex items-center justify-center relative">
           <ViewTreeLogo showText />
-          <AccountMenu />
+          <div className="absolute right-0">
+            <AccountMenu />
+          </div>
         </div>
 
         {/* Hero content - centered */}
@@ -53,8 +48,8 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col gap-3 justify-center">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
               asChild
             >
@@ -63,7 +58,7 @@ export default function Home() {
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
-            <Button 
+            <Button
               size="sm"
               variant="ghost"
               className="text-muted-foreground hover:text-foreground"
@@ -74,51 +69,30 @@ export default function Home() {
               </Link>
             </Button>
           </div>
-
-          {/* Ultra-modern trio of profile image previews */}
-          <div className="mt-10 w-full max-w-5xl mx-auto">
-            <div className="relative flex flex-col items-center">
-              <div className="pointer-events-none select-none grid gap-6 md:grid-cols-3 w-full max-w-5xl">
-                {heroPreviewImages.map((img) => (
-                  <div
-                    key={img.src}
-                    className="rounded-[32px] border border-border/60 shadow-xl overflow-hidden bg-card/80"
-                  >
-                    <div className="px-3 pt-4 pb-5">
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        width={480}
-                        height={720}
-                        className="w-full h-auto rounded-[24px] object-cover"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
       {/* Section 3: How it works - light green background */}
       <section className="py-16 px-4 bg-accent">
         <div className="max-w-viewtree mx-auto">
-          <h2 className="text-2xl font-bold mb-8">How it works</h2>
-          
-          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
+          <h2 className="text-3xl font-bold mb-3">How it works</h2>
+          <p className="text-muted-foreground mb-10 max-w-xl">
+            A tiny flow designed for people who think in sentences, not threads.
+          </p>
+
+          <div className="grid gap-4 md:grid-cols-3">
             {steps.map((step) => (
               <div
                 key={step.number}
-                className="bg-card border border-border rounded-2xl p-5 h-full flex"
+                className="bg-card border border-border/60 rounded-2xl p-5 h-full flex"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0">
                     {step.number}
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-1">{step.title}</h3>
-                    <p className="text-muted-foreground text-sm">{step.description}</p>
+                    <h3 className="font-semibold text-base mb-1">{step.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               </div>

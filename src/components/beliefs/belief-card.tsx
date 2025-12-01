@@ -122,7 +122,10 @@ export function ViewCard({
 
             {/* Dropdown */}
             {menuOpen && (
-              <div className="absolute right-0 top-full mt-1 z-50 min-w-[160px] bg-background border border-border rounded-xl shadow-lg py-1 overflow-hidden">
+              <div
+                className="absolute right-0 top-full mt-1 z-50 min-w-[160px] bg-background border border-border rounded-xl shadow-lg py-1 overflow-hidden"
+                style={{ color: "hsl(var(--foreground))" }}
+              >
                 {showCopyAction && (
                   <button
                     onClick={handleMenuAction(() => onCopy?.(view.id))}

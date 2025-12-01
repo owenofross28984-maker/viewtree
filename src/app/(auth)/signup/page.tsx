@@ -47,7 +47,7 @@ export default function SignupPage() {
         setIsLoading(false);
         return;
       }
-      router.push("/login");
+      router.push(`/confirm-email?email=${encodeURIComponent(formData.email)}`);
     } catch {
       setError("Unexpected error creating account.");
       setIsLoading(false);
@@ -108,7 +108,7 @@ export default function SignupPage() {
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
               <CardDescription>
-                Start documenting your beliefs today
+                Start sharing your views.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -291,11 +291,11 @@ export default function SignupPage() {
           className="max-w-lg text-center"
         >
           <h2 className="text-4xl font-bold mb-4">
-            Join thousands of thinkers
+            Start your ViewTree
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Document your beliefs with evidence, track your intellectual growth,
-            and share your journey with the world.
+            Capture what you believe today, organise your views, and share a clear
+            public page when you're ready.
           </p>
           <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
