@@ -1,100 +1,148 @@
+"use client";
+
+import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { ViewTreeLogo } from "@/components/layout/logo";
+import { AccountMenu } from "@/components/layout/account-menu";
+
+const heroPreviewImages = [
+  { src: "/images/profile-preview-1.png", alt: "Example ViewTree profile 1" },
+  { src: "/images/profile-preview-2.png", alt: "Example ViewTree profile 2" },
+  { src: "/images/profile-preview-3.png", alt: "Example ViewTree profile 3" },
+];
+
+// 3-step flow
+const steps = [
+  {
+    number: "1",
+    title: "Choose your @name",
+    description: "Sign up in 10 seconds with email or Google.",
+  },
+  {
+    number: "2",
+    title: "Add your views",
+    description: "Write what you believe, support, or oppose.",
+  },
+  {
+    number: "3",
+    title: "Share one link",
+    description: "Put viewtr.ee/@you in your bio. Done.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section - 100vh on mobile */}
+      <section className="min-h-screen flex flex-col px-4">
+        {/* Top bar: wordmark + account menu */}
+        <div className="pt-6 flex items-center justify-between max-w-viewtree mx-auto w-full">
+          <ViewTreeLogo showText />
+          <AccountMenu />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+        {/* Hero content - centered */}
+        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-viewtree mx-auto w-full">
+          <h1 className="text-hero-mobile md:text-hero font-bold tracking-tight mb-4">
+            Your views in one link.
+          </h1>
+          <p className="text-xl font-medium text-secondary-foreground mb-8 max-w-xl">
+            One page that always matches what you actually think, support, and oppose.
+          </p>
+
+          <div className="flex flex-col gap-3 justify-center">
+            <Button 
+              size="lg" 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+              asChild
+            >
+              <Link href="/signup">
+                Get started
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </Button>
+            <Button 
+              size="sm"
+              variant="ghost"
+              className="text-muted-foreground hover:text-foreground"
+              asChild
+            >
+              <Link href="/login">
+                Already have one? Sign in
+              </Link>
+            </Button>
+          </div>
+
+          {/* Ultra-modern trio of profile image previews */}
+          <div className="mt-10 w-full max-w-5xl mx-auto">
+            <div className="relative flex flex-col items-center">
+              <div className="pointer-events-none select-none grid gap-6 md:grid-cols-3 w-full max-w-5xl">
+                {heroPreviewImages.map((img) => (
+                  <div
+                    key={img.src}
+                    className="rounded-[32px] border border-border/60 shadow-xl overflow-hidden bg-card/80"
+                  >
+                    <div className="px-3 pt-4 pb-5">
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        width={480}
+                        height={720}
+                        className="w-full h-auto rounded-[24px] object-cover"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3: How it works - light green background */}
+      <section className="py-16 px-4 bg-accent">
+        <div className="max-w-viewtree mx-auto">
+          <h2 className="text-2xl font-bold mb-8">How it works</h2>
+          
+          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
+            {steps.map((step) => (
+              <div
+                key={step.number}
+                className="bg-card border border-border rounded-2xl p-5 h-full flex"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0">
+                    {step.number}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">{step.title}</h3>
+                    <p className="text-muted-foreground text-sm">{step.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Footer - single line per spec */}
+      <footer className="py-8 px-4 border-t border-border">
+        <div className="max-w-viewtree mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-sm text-muted-foreground">
+            Made by one person who got tired of Twitter threads.
+          </p>
+          <div className="flex gap-4 text-sm justify-start sm:justify-end">
+            <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+              Terms
+            </Link>
+          </div>
+        </div>
       </footer>
     </div>
   );
