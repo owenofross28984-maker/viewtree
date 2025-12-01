@@ -123,7 +123,7 @@ export default function ProfilePage({
     };
 
     fetchData();
-  }, [params.username]);
+  }, [params.username, isReservedUsername]);
 
   // MVP: everything is free and always watermarked
   const showWatermark = true;

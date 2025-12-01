@@ -169,6 +169,12 @@ export function ProfileCard({
           </div>
         )}
       </div>
+
+      {showWatermark && (
+        <div className="px-5 pb-4 text-[10px] text-center opacity-60">
+          Made with <span className="font-semibold">ViewTree</span>
+        </div>
+      )}
     </div>
   );
 }

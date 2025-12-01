@@ -6,9 +6,9 @@ export default function PrivacyPage() {
         <p className="text-xs uppercase tracking-wide text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
 
         <p>
-          ViewTree ("we", "us", or "our") is a personal project that helps you document and share your
+          ViewTree (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a personal project that helps you document and share your
           views. This Privacy Policy explains how we collect, use, and protect your information when you use
-          viewtr.ee (the "Service").
+          viewtr.ee (the &quot;Service&quot;).
         </p>
 
         <h2 className="text-lg font-semibold text-foreground">1. Information we collect</h2>
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
 
         <h2 className="text-lg font-semibold text-foreground">8. Changes to this policy</h2>
         <p>
-          We may update this Privacy Policy from time to time. When we do, we will change the "Last updated"
+          We may update this Privacy Policy from time to time. When we do, we will change the &quot;Last updated&quot;
           date at the top of this page. Your continued use of the Service after changes become effective
           means you accept the updated policy.
         </p>
