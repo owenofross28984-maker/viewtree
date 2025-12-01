@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function POST(req: NextRequest) {
+  const admin = supabaseAdmin;
+
+  if (!admin) {
+    console.error("Supabase admin client is not configured");
+    return NextResponse.json(
+      { error: "Server configuration error" },
+      { status: 500 },
+    );
+  }
   const authHeader = req.headers.get("authorization") ?? "";
   const token = authHeader.startsWith("Bearer ")
     ? authHeader.slice("Bearer ".length).trim()
@@ -14,7 +23,7 @@ export async function POST(req: NextRequest) {
   const {
     data: userResult,
     error: userError,
-  } = await supabaseAdmin.auth.getUser(token);
+  } = await admin.auth.getUser(token);
 
   if (userError || !userResult?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -23,7 +32,7 @@ export async function POST(req: NextRequest) {
   const userId = userResult.user.id;
 
   // Delete user-owned data first
-  const { error: viewsError } = await supabaseAdmin
+  const { error: viewsError } = await admin
     .from("views")
     .delete()
     .eq("user_id", userId);
@@ -36,7 +45,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { error: profileError } = await supabaseAdmin
+  const { error: profileError } = await admin
     .from("profiles")
     .delete()
     .eq("id", userId);
@@ -50,7 +59,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { error: deleteUserError } =
-    await supabaseAdmin.auth.admin.deleteUser(userId);
+    await admin.auth.admin.deleteUser(userId);
 
   if (deleteUserError) {
     console.error("Error deleting auth user", userId, deleteUserError);

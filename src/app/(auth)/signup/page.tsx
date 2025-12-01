@@ -295,7 +295,7 @@ export default function SignupPage() {
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
             Capture what you believe today, organise your views, and share a clear
-            public page when you're ready.
+            public page when you&apos;re ready.
           </p>
           <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
